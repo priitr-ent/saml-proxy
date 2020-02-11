@@ -1,18 +1,19 @@
-FROM fedora:23
-MAINTAINER Barnabas Sudy <barnabas.sudy@gmail.com>
+FROM registry.fedoraproject.org/fedora-minimal:31
+# Based on https://github.com/bsudy/saml-proxy of barnabas.sudy@gmail.com
+MAINTAINER Priit Randla <priit.randla@entigo.com>
 
-RUN dnf install -y \
+RUN microdnf install -y \
   apr-util-openssl \
   authconfig \
   httpd \
   mod_auth_gssapi \
-  mod_auth_kerb \
   mod_auth_mellon \
   mod_intercept_form_submit \
   mod_session \
   mod_ssl \
   gettext \
-  && dnf clean all
+  sscg \
+  && microdnf clean all && rm -rf /var/cache/dnf
 
 # Add mod_auth_mellon setup script
 ADD mellon_create_metadata.sh /usr/sbin/mellon_create_metadata.sh

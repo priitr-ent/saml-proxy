@@ -97,6 +97,14 @@ export REQUEST_HEADERS
 
 # configure Apache proxy and auth
 cat /etc/httpd/conf.d/proxy.conf.template | envsubst '$SCHEMA,$HOST,$BACKEND,$MELLON_PATH,$REQUEST_HEADERS' > /etc/httpd/conf.d/proxy.conf
+# generate default key and certificate for apache mod_ssl
+sscg -q                                                             \
+     --cert-file           /etc/pki/tls/certs/localhost.crt         \
+     --cert-key-file       /etc/pki/tls/private/localhost.key       \
+     --ca-file             /etc/pki/tls/certs/localhost.crt         \
+     --lifetime            365                                      \
+     --hostname            $HOST                                    \
+     --email               root@$HOST
 
 # Start apache
 httpd -DFOREGROUND

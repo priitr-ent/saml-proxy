@@ -50,6 +50,7 @@ export HOST=${PROXY_HOST:-$REAL_HOST}
 export realm=`echo $HOST | tr [a-z] [A-Z]`
 export BACKEND=${BACKEND:-https://api.example.com:8443}
 export MELLON_PATH=${MELLON_PATH:-mellon}
+export COOKIE="${COOKIE:-cookie}"
 
 # Create mod_auth_mellon service provider config
 if [ -f /etc/httpd/conf.d/saml_sp.key ] || [ -f /etc/httpd/conf.d/saml_sp.cert ] || [ -f /etc/httpd/conf.d/saml_sp.xml ]; then
@@ -96,7 +97,7 @@ done
 export REQUEST_HEADERS
 
 # configure Apache proxy and auth
-cat /etc/httpd/conf.d/proxy.conf.template | envsubst '$SCHEMA,$HOST,$BACKEND,$MELLON_PATH,$REQUEST_HEADERS' > /etc/httpd/conf.d/proxy.conf
+cat /etc/httpd/conf.d/proxy.conf.template | envsubst '$SCHEMA,$HOST,$COOKIE,$BACKEND,$MELLON_PATH,$REQUEST_HEADERS' > /etc/httpd/conf.d/proxy.conf
 # generate default key and certificate for apache mod_ssl
 sscg -q                                                             \
      --cert-file           /etc/pki/tls/certs/localhost.crt         \

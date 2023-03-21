@@ -96,8 +96,20 @@ EOF
 done
 export REQUEST_HEADERS
 
+if [ -n "$BACKEND_IS_RABBITMQ" ]; then
+    BACKEND_OPTIONS="nocanon"
+    ENCODED_SLASHES="NoDecode"
+else
+    BACKEND_OPTIONS=""
+    ENCODED_SLASHES="Off"
+fi
+
+export BACKEND_OPTIONS
+export ENCODED_SLASHES
+export BACKEND_IS_RABBITMQ
+
 # configure Apache proxy and auth
-cat /etc/httpd/conf.d/proxy.conf.template | envsubst '$SCHEMA,$HOST,$COOKIE,$BACKEND,$MELLON_PATH,$REQUEST_HEADERS' > /etc/httpd/conf.d/proxy.conf
+cat /etc/httpd/conf.d/proxy.conf.template | envsubst '$SCHEMA,$HOST,$COOKIE,$ENCODED_SLASHES,$BACKEND_OPTIONS,$BACKEND,$MELLON_PATH,$REQUEST_HEADERS' > /etc/httpd/conf.d/proxy.conf
 # generate default key and certificate for apache mod_ssl
 sscg -q                                                             \
      --cert-file           /etc/pki/tls/certs/localhost.crt         \

@@ -1,18 +1,18 @@
-FROM registry.fedoraproject.org/fedora-minimal:32
+FROM registry.fedoraproject.org/fedora-minimal:36
 # Based on https://github.com/bsudy/saml-proxy of barnabas.sudy@gmail.com
 MAINTAINER Priit Randla <priit.randla@entigo.com>
 
-RUN microdnf install -y \
-  apr-util-openssl \
-  authconfig \
-  httpd \
-  mod_auth_gssapi \
-  mod_auth_mellon \
-  mod_intercept_form_submit \
-  mod_session \
-  mod_ssl \
-  gettext \
-  sscg \
+RUN microdnf update --nodocs -y \
+  && microdnf install --nodocs -y \
+    apr-util-openssl \
+    httpd \
+    mod_auth_gssapi \
+    mod_auth_mellon \
+    mod_intercept_form_submit \
+    mod_session \
+    mod_ssl \
+    gettext \
+    sscg \
   && microdnf clean all && rm -rf /var/cache/dnf
 
 # Add mod_auth_mellon setup script

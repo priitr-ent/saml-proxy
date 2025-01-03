@@ -1,0 +1,23 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches: none
+  pull_request:
+    branches: none
+  workflow_dispatch:
+env:
+  BASE_VERSION: 41
+  IMAGE_NAME: priitrent/saml-proxy
+  IMAGE_TAG: ${BASE_VERSION}-$(date +%Y%m%d)-${{ github.run_number }}
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag $IMAGE_NAME:$IMAGE_TAG

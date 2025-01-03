@@ -19,4 +19,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag ${BASE_VERSION}-$(date +%Y%m%d)-${{ github.run_number }}
+      run: docker build . --file Dockerfile --tag ${IMAGE_NAME}:${BASE_VERSION}-$(date +%Y%m%d)-${{ github.run_number }}

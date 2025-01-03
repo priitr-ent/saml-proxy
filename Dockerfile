@@ -1,9 +1,11 @@
-FROM registry.fedoraproject.org/fedora-minimal:40
+FROM registry.fedoraproject.org/fedora-minimal:41
 # Based on https://github.com/bsudy/saml-proxy of barnabas.sudy@gmail.com
 MAINTAINER Priit Randla <priit.randla@entigo.com>
 
 RUN microdnf update --nodocs -y \
   && microdnf install --nodocs -y \
+    procps-ng \
+    iproute \
     apr-util-openssl \
     httpd \
     mod_auth_gssapi \
@@ -21,7 +23,7 @@ ADD mellon_create_metadata.sh /usr/sbin/mellon_create_metadata.sh
 # Add conf file for Apache
 ADD proxy.conf /etc/httpd/conf.d/proxy.conf.template
 
-EXPOSE 80
+EXPOSE 8080
 
 ADD configure /usr/sbin/configure
 ENTRYPOINT /usr/sbin/configure

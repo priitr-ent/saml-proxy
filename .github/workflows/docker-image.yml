@@ -9,7 +9,6 @@ on:
 env:
   BASE_VERSION: 41
   IMAGE_NAME: priitrent/saml-proxy
-  IMAGE_TAG: ${BASE_VERSION}-$(date +%Y%m%d)-${{ github.run_number }}
 
 jobs:
 
@@ -20,4 +19,4 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag $IMAGE_NAME:$IMAGE_TAG
+      run: docker build . --file Dockerfile --tag ${BASE_VERSION}-$(date +%Y%m%d)-${{ github.run_number }}

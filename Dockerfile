@@ -1,4 +1,4 @@
-FROM registry.fedoraproject.org/fedora-minimal:41
+FROM registry.fedoraproject.org/fedora-minimal:42
 # Based on https://github.com/bsudy/saml-proxy of barnabas.sudy@gmail.com
 MAINTAINER Priit Randla <priit.randla@entigo.com>
 

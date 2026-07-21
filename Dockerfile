@@ -1,11 +1,9 @@
-FROM registry.fedoraproject.org/fedora-minimal:42
+FROM registry.fedoraproject.org/fedora-minimal:43
 # Based on https://github.com/bsudy/saml-proxy of barnabas.sudy@gmail.com
 LABEL maintainer="Priit Randla <priit.randla@entigo.com>"
 
 RUN microdnf update --nodocs -y \
   && microdnf install --nodocs -y \
-    procps-ng \
-    iproute \
     apr-util-openssl \
     httpd \
     mod_auth_gssapi \

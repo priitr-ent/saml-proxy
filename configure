@@ -8,7 +8,7 @@ EXAMPLES=$(cat <<- EOF
 Example:
   Docker:
 
-    docker run -v <path>/saml_idp.xml:/etc/httpd/conf.d/saml_idp.xml -e BACKEND=https://api.example.com:8443 barnabassudy/saml-proxy
+    docker run -v <path>/saml_idp.xml:/etc/httpd/conf.d/saml_idp.xml -e BACKEND=https://api.example.com:8443 priitrent/saml-proxy
 
   Docker-compose:
 
@@ -17,11 +17,11 @@ Example:
       yourservice:
           ...
       saml-proxy:
-          image: "barnabassudy/saml-proxy"
+          image: "priitrent/saml-proxy"
           environment:
               BACKEND: "http://yourservice:port"
           ports:
-              - "80:80"
+              - "8080:8080"
           volumes:
               - "<path>/saml_idp.xml:/etc/httpd/conf.d/saml_idp.xml"
 EOF

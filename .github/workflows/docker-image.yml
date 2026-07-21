@@ -7,7 +7,8 @@ on:
     branches: none
   workflow_dispatch:
 env:
-  BASE_VERSION: 41
+  # Keep in sync with the Fedora version in the Dockerfile's FROM line.
+  BASE_VERSION: 43
   IMAGE_NAME: priitrent/saml-proxy
 
 jobs:

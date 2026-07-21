@@ -10,7 +10,7 @@ I'm using the official Grafana image configured via environment variables.
 
 ### Deployment
 ```
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: grafana
@@ -92,7 +92,8 @@ spec:
 
 ### ConfigMap
 
-The configmap stores the SAML configuration. You should download the
+The configmap stores the SAML configuration. Download your IdP's SAML metadata and put it
+into the config map (or use `kubectl create configmap --from-file`).
 
 ```
 apiVersion: v1
@@ -111,7 +112,7 @@ data:
 * `EmailAddress` SAML field is mapped to `X-Webauth-User` header. In my config the Grafana usernames will be the email addresses from SAML IDP. You can change it to a field you want to use.
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: saml-proxy
@@ -137,10 +138,10 @@ spec:
     spec:
       containers:
       - name: saml-proxy
-        image: "barnabassudy/saml-proxy:latest"
+        image: "priitrent/saml-proxy:latest"
         ports:
         - name: http-service
-          containerPort: 80
+          containerPort: 8080
         livenessProbe:
            tcpSocket:
              port: http-service
@@ -183,16 +184,16 @@ spec:
 ## Ingress
 
 ```
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: monitor
   namespace: <<yournamespace>>
   annotations:
     # USE YOUR ANNOTATIONS
-    # To enable let's encrypt with kube-logo: kubernetes.io/tls-acme: "true"
+    # To enable let's encrypt with cert-manager: cert-manager.io/cluster-issuer: "letsencrypt"
 spec:
-  # Use some SSL
+  # The Ingress terminates TLS in front of the proxy.
   tls:
   - hosts:
     # The host where the service will be available
@@ -204,7 +205,10 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: saml-proxy
-          servicePort: http
+          service:
+            name: saml-proxy
+            port:
+              name: http
 ```
